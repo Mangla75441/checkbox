@@ -1,0 +1,31 @@
+link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" /
+/! jQuery library
+script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" 
+/! Latest compiled JavaScript
+script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+
+.container
+	.panel.panel-primary
+		.panel-heading Edit User 
+		.panel-body 
+			=form_for @user,html: {  class: "form form-horizontal form-bordered"} do |f|   
+				.form-group
+					= f.label :username 
+					= f.text_field :name, class: "form-control", placeholder:"Username", required:""
+				- if @roles.present? 
+					-@roles.each do |role| 
+						/ -ru = @user.roles.collect(&:id) 
+						-ru = @user.role_users.where(role_id: role.id).last
+						-checked =@user.role_users.collect(&:role_id)
+						.form-group
+							/ = check_box_tag "user[role_ids][]", role.id,ru.include?(role.id) ? true :false 
+							= hidden_field_tag "user[role_users_attributes][][id]",ru.try(:id)
+							= hidden_field_tag "user[role_users_attributes][][user_id]",@user.id
+							/ = hidden_field_tag "user[role_users_attributes][][role_id]",role.id
+							/ = hidden_field_tag "user[role_users_attributes][][_destroy]",@user.id
+							= check_box_tag "user[role_users_attributes][][role_id]",role.id,checked.include?(role.id) ? true :false
+							/ = check_box_tag "user[role_ids][]", role.id,ru.include?(role.id) ? true :false
+							= role.role_name			
+				= f.submit 'submit',class: "btn btn-primary"
+
+
