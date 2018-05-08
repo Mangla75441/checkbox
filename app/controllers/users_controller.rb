@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 	private
 		def user_params
 			p "-------------------"
-			params.require(:user).permit(:name,role_users_attributes: [:id, :user_id,:role_id])
+			params.require(:user).permit(:name,role_users_attributes: [:id, :user_id,:role_id,:_destroy])
 		end
 
 end	
